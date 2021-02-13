@@ -32,16 +32,14 @@ size_t arr_length(arrp a)
 	return result;
 }
 
-size_t arr_elength(arrp a)
+size_t arr_esize(arrp a)
 {
 	return arr_size(a) / arr_length(a);
 }
 
-void** arr_arr(arrp a, void** dest)
+void* arr_arr(arrp a)
 {
-	if (a)
-		*dest = &(a->a);
-	return dest;
+	return a ? a->a : NULL;
 }
 
 char_type chrtyp(char c)
