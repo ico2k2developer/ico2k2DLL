@@ -1,45 +1,64 @@
 #include "pch.h" 
 #include "ico2k2.h"
 
-arrp arr_new(void* a, size_t size,size_t length,arrp dest)
+arrp arr_enew(void* a, size_t size_element,size_t length,arrp* dest)
 {
-	if (!dest)
-		dest = (arrp)malloc(sizeof(arr));
-	if (dest)
+	if (!(*dest))
+	{
+		(*dest) = (arrp)malloc(sizeof(arr));
+	}
+	if (*dest)
 	{
 		if (!a)
-			a = malloc(size * length);
-		dest->a = a;
-		dest->l = length == size ? 0 : 1;
-		dest->sizes = (size_t*)malloc(sizeof(size_t) * ((size_t)dest->l + 1));
+		{
+			a = malloc(size_element * length);
+		}
+		if(a)
+			(*dest)->arr = a;
+		(*dest)->size = size_element;
+		(*dest)->length = length;
 	}
-	return dest;
+	return *dest;
 }
 
-size_t arr_size(arrp a)
+arrp arr_tnew(void* a, size_t size_total,size_t length,arrp* dest)
 {
-	size_t result = NULL;
-	if (a)
-		result = a->sizes[ARRAYP_SZ];
-	return result;
+	return arr_enew(a, size_total / length, length, dest);
+}
+
+arrp arr_snew(void* a, size_t size_total,size_t size_element,arrp* dest)
+{
+	return arr_enew(a, size_element, size_total / size_element, dest);
 }
 
 size_t arr_length(arrp a)
 {
-	size_t result = NULL;
-	if (a)
-		result = a->sizes[a->l];
-	return result;
+	return a ? a->length : NULL;
 }
 
 size_t arr_esize(arrp a)
 {
-	return arr_size(a) / arr_length(a);
+	return a ? a->size : NULL;
+}
+
+size_t arr_size(arrp a)
+{
+	return a ? arr_esize(a) * arr_length(a) : NULL;
 }
 
 void* arr_arr(arrp a)
 {
-	return a ? a->a : NULL;
+	return a ? a->arr : NULL;
+}
+
+void arr_del(arrp a)
+{
+	if (a)
+	{
+		if (a->arr)
+			free(a->arr);
+		free(a);
+	}
 }
 
 char_type chrtyp(char c)
@@ -757,7 +776,7 @@ void arr_print(char* a, size_t size)
 
 void arr_print(arrp a)
 {
-	arr_print((char*)a->a, arr_length(a));
+	arr_print((char*)arr_arr(a), arr_length(a));
 }
 
 long ffind(FILE* f, char* find, size_t length)

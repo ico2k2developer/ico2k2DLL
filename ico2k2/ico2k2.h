@@ -43,24 +43,23 @@
 
 #define	SIZE_DESC	45
 
-
-#define	ARRAYP_SZ	0
-
 typedef struct
 {
-	void* a;
-	size_t* sizes;
-	unsigned char l;
+	void* arr;
+	size_t size,length;
 }arr;
 
 typedef unsigned char char_type;
 typedef arr* arrp;
 
-ICO2K2_API arrp				arr_new(void* a, size_t size, size_t length, arrp dest);
-ICO2K2_API size_t			arr_size(arrp a);
+ICO2K2_API arrp				arr_enew(void* a, size_t size_element, size_t length, arrp* dest);
+ICO2K2_API arrp				arr_tnew(void* a, size_t size_total, size_t length, arrp* dest);
+ICO2K2_API arrp				arr_snew(void* a, size_t size_total, size_t size_element, arrp* dest);
 ICO2K2_API size_t			arr_length(arrp a);
 ICO2K2_API size_t			arr_esize(arrp a);
+ICO2K2_API size_t			arr_size(arrp a);
 ICO2K2_API void*			arr_arr(arrp a);
+ICO2K2_API void				arr_del(arrp a);
 ICO2K2_API char_type		chrtyp(char c);
 ICO2K2_API char				chrupc(char c);
 ICO2K2_API char				chrdwc(char c);
