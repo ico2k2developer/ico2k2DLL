@@ -1,6 +1,49 @@
 #include "pch.h" 
 #include "ico2k2.h"
 
+arrp arr_new(void* a, size_t size,size_t length,arrp dest)
+{
+	if (!dest)
+		dest = (arrp)malloc(sizeof(arr));
+	if (dest)
+	{
+		if (!a)
+			a = malloc(size * length);
+		dest->a = a;
+		dest->l = length == size ? 0 : 1;
+		dest->sizes = (size_t*)malloc(sizeof(size_t) * ((size_t)dest->l + 1));
+	}
+	return dest;
+}
+
+size_t arr_size(arrp a)
+{
+	size_t result = NULL;
+	if (a)
+		result = a->sizes[ARRAYP_SZ];
+	return result;
+}
+
+size_t arr_length(arrp a)
+{
+	size_t result = NULL;
+	if (a)
+		result = a->sizes[a->l];
+	return result;
+}
+
+size_t arr_elength(arrp a)
+{
+	return arr_size(a) / arr_length(a);
+}
+
+void** arr_arr(arrp a, void** dest)
+{
+	if (a)
+		*dest = &(a->a);
+	return dest;
+}
+
 char_type chrtyp(char c)
 {
 	char_type result = OTHER;
@@ -714,9 +757,14 @@ void arr_print(char* a, size_t size)
 	printf("\n");
 }
 
-long int ffind(FILE* f, char* find, size_t length)
+void arr_print(arrp a)
 {
-	long int result = EOF;
+	arr_print((char*)a->a, arr_length(a));
+}
+
+long ffind(FILE* f, char* find, size_t length)
+{
+	long result = EOF;
 	size_t i;
 	int c;
 	if (f && find)
@@ -981,5 +1029,14 @@ unsigned char fisc_uneven(char c)
 			break;
 		}
 	}
+	return result;
+}
+
+long flen(FILE* f)
+{
+	long result, l = ftell(f);
+	fseek(f, 0, SEEK_END);
+	result = ftell(f);
+	fseek(f, l, SEEK_SET);
 	return result;
 }

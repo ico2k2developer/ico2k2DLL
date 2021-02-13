@@ -6,6 +6,9 @@
 #define ICO2K2_API __declspec(dllimport)
 #endif
 
+#ifndef _ICO2K2__H_
+#define _ICO2K2__H_
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -40,8 +43,24 @@
 
 #define	SIZE_DESC	45
 
-typedef unsigned char char_type;
 
+#define	ARRAYP_SZ	0
+
+typedef struct
+{
+	void* a;
+	size_t* sizes;
+	unsigned char l;
+}arr;
+
+typedef unsigned char char_type;
+typedef arr* arrp;
+
+ICO2K2_API arrp				arr_new(void* a, size_t size, size_t length, arrp dest);
+ICO2K2_API size_t			arr_size(arrp a);
+ICO2K2_API size_t			arr_length(arrp a);
+ICO2K2_API size_t			arr_elength(arrp a);
+ICO2K2_API void**			arr_arr(arrp a,void** dest);
 ICO2K2_API char_type		chrtyp(char c);
 ICO2K2_API char				chrupc(char c);
 ICO2K2_API char				chrdwc(char c);
@@ -51,9 +70,13 @@ ICO2K2_API size_t			strget(char* buffer, int max);
 ICO2K2_API size_t			strget(char* buffer, int max,FILE* f);
 ICO2K2_API char*			chrdes(char_type c);
 ICO2K2_API void				arr_print(char* a,size_t size);
-ICO2K2_API long int			ffind(FILE * f, char* find, size_t length);
+ICO2K2_API void				arr_print(arrp a);
+ICO2K2_API long				ffind(FILE * f, char* find, size_t length);
 ICO2K2_API unsigned char	digtoi(char digit);
 ICO2K2_API char				itodig(unsigned char i);
 ICO2K2_API char				fisc_check(char* code,size_t length);
 ICO2K2_API unsigned char	fisc_even(char c);
 ICO2K2_API unsigned char	fisc_uneven(char c);
+ICO2K2_API long				flen(FILE* f);
+
+#endif
