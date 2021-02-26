@@ -40,8 +40,68 @@
 #define	NORMAL		0x0
 #define	ACCENTED	0x80
 
-
 #define	SIZE_DESC	45
+
+#define STR_HELPER(x) #x
+#define STR(x) STR_HELPER(x)
+
+#define DO_EXPAND(VAL)  VAL ## 1
+#define EMPTYSTR(VAL)     DO_EXPAND(VAL)
+
+
+#ifdef  _MSC_VER
+#define	__COMPILER__	"Visual Studio " STR(_MSC_VER) " (" STR(_MSC_FULL_VER) ")"
+#elif	__GNUC__
+#define	__COMPILER__	"gcc " STR(__GNUC__) "." STR(__GNUC_MINOR__)
+#elif	__clang__
+#define	__COMPILER__	"clang " STR(__clang_major__) "." STR(__clang_minor__) ", patch level " STR(__clang_patchlevel__)
+#elif	__EMSCRIPTEN__ 
+#define	__COMPILER__	"emscripten " STR(__EMSCRIPTEN__)
+#elif	__MINGW32__ 
+#define	__COMPILER__	"MinGW 32 bit " STR(__MINGW32_MAJOR_VERSION ) "." STR(__MINGW32_MINOR_VERSION )
+#elif	__MINGW64__ 
+#define	__COMPILER__	"MinGW 64 bit " STR(__MINGW64_MAJOR_VERSION ) "." STR(__MINGW64_MINOR_VERSION )
+#else
+#define __COMPILER__	"Unknown compiler"
+#endif
+
+#ifdef	_WIN64
+#define	__OS__			"Windows 64 bit"
+#elif	_WIN32
+#define	__OS__			"Windows 32 bit"
+#elif	__ANDROID__ 
+#define	__OS__			"Android"
+#elif	__linux__ 
+#define	__OS__			"Linux"
+#elif	__APPLE__ 
+#define	__OS__			"Mac OS X or iOS"
+#elif	__ros__ 
+#define	__OS__			"Akaros"
+#elif	__native_client__ 
+#define	__OS__			"NaCL"
+#elif	__asmjs__ 
+#define	__OS__			"AsmJS"
+#elif	__Fuchsia__ 
+#define	__OS__			"Google Fuchsia"
+#endif
+
+#ifdef	__STDC__
+#define	__LANGUAGE__	"C"
+#elif	__cplusplus
+#define	__LANGUAGE__		"C++ (" STR(__cplusplus) ")"
+#endif
+
+#ifdef	_DEBUG 
+#define	__VERSION__		"Debug"
+#else
+#define	__VERSION__		"Release"
+#endif
+
+#ifdef	_WIN32
+#define	PATH_FONTS		"%SYSTEMROOT%\\Fonts"
+
+#endif
+
 
 typedef struct
 {
